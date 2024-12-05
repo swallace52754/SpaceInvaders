@@ -1,7 +1,8 @@
 import java.awt.*;
 
 public abstract class GameEntity {
-    protected int x, y, width, height;
+    protected int x, y, width;
+    protected static int height;
 
     public GameEntity (int x, int y, int height, int width){
         this.x = x;

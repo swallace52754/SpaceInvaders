@@ -1,18 +1,26 @@
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class GameScreen extends JPanel implements Runnable {
     private boolean running;
     private Thread gameThread;
     private Player player;
+    private ArrayList<Enemy> enemies;
 
     public GameScreen() {
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
 
         player = new Player(375, 550);
+        enemies = new ArrayList<>();
+
+        for(int i=0; i<5; i++){
+            enemies.add(new Enemy((100 + (i*60)), 100));
+        }
+
 
         setFocusable(true);
         requestFocus();
@@ -40,16 +48,25 @@ public class GameScreen extends JPanel implements Runnable {
         while (running) {
             update();
             repaint();
-            // try{
-            //     Thread.sleep(16);
-            // } catch (InterruptedException e) {
-            //     e.printStackTrace();
-            // }
+            try{
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void update() {
         player.update();
+
+        for (int i =0; i<enemies.size(); i++){
+            Enemy enemy = enemies.get(i);
+            enemy.move();
+            if(enemy.isOutOfBounds()){
+                enemies.remove(i);
+                i--;
+            }
+        }
     }
 
     @Override
@@ -57,6 +74,10 @@ public class GameScreen extends JPanel implements Runnable {
         super.paintComponent(g);
 
         player.draw(g);
+
+        for(Enemy enemy : enemies){
+            enemy.draw(g);
+        }
     }
     
 }
