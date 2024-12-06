@@ -10,6 +10,7 @@ public class Main {
         frame.add(gameScreen);
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
         frame.setVisible(true);
 
         gameScreen.startGame();

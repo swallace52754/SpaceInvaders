@@ -22,7 +22,7 @@ public class Enemy extends GameEntity{
     }
 
     public boolean isOutOfBounds() {
-        return x<0 || x>800;
+        return getY() > 500;
     }
 
     @Override
