@@ -21,7 +21,7 @@ public class GameScreen extends JPanel implements Runnable {
         bullets = new ArrayList<>();
 
         for(int i=0; i<5; i++){
-            enemies.add(new Enemy((100 + (i*60)), 100));
+            enemies.add(new Enemy((10 + (i*60)), 30));
         }
 
 
@@ -92,8 +92,8 @@ public class GameScreen extends JPanel implements Runnable {
                     score += 50;
                     i--;
                     if (enemies.size() < 1){
+                        score += 150;
                         for(int k=0; k<5; k++){
-                            score += 150;
                             enemies.add(new Enemy((100 + (k*60)), 100));
                         }
                     }
@@ -144,8 +144,10 @@ public class GameScreen extends JPanel implements Runnable {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.GREEN);
-            g.drawString("GAME OVER", getWidth() / 2 - 50, getHeight() / 2 - 20);
-            g.drawString("Your Score: " + score, getWidth() / 2 - 50, getHeight() / 2);
+            g.setFont(new Font("Arial", Font.BOLD, 50));
+            g.drawString("GAME OVER", getWidth() / 2 - 150, getHeight() / 2 - 20);
+            g.setFont(new Font("Arial", Font.PLAIN, 30));
+            g.drawString("Your Score: " + score, getWidth() / 2 - 100, getHeight() / 2 + 40);
         }
     }
     

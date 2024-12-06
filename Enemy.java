@@ -16,11 +16,10 @@ public class Enemy extends GameEntity{
         if (x<=0 || x + width >=800){
             speed = -speed;
 
-            y += 100;
-            //TODO: update ability to stop at bottom
+            y += 60;
         }
     }
-
+    
     public boolean isOutOfBounds() {
         return getY() > 500;
     }
