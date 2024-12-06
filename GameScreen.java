@@ -88,6 +88,12 @@ public class GameScreen extends JPanel implements Runnable {
                     bullets.remove(i);
                     enemies.remove(j);
                     i--;
+
+                    if (enemies.size() < 1){
+                        for(int k=0; k<5; k++){
+                            enemies.add(new Enemy((100 + (k*60)), 100));
+                        }
+                    }
                     break;
                 }
                 
