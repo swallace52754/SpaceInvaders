@@ -81,6 +81,17 @@ public class GameScreen extends JPanel implements Runnable {
                 bullets.remove(i);
                 i--;
             }
+
+            for (int j = 0; j < enemies.size(); j++) {
+                Enemy enemy = enemies.get(j);
+                if(bullet.intersects(enemy)){
+                    bullets.remove(i);
+                    enemies.remove(j);
+                    i--;
+                    break;
+                }
+                
+            }
         }
     }
 

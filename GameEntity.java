@@ -26,4 +26,12 @@ public abstract class GameEntity {
     public int getWidth() {
         return width;
     }
+
+    public boolean intersects(GameEntity other) {
+        return this.getX() < other.getX() + other.getWidth() && 
+        this.getX() + this.getWidth() > other.getX() &&
+        this.getY() < other.getY() + other.getHeight() && 
+        this.getY() + this.getHeight() > other.getY();
+
+    }
 }
