@@ -9,6 +9,7 @@ public class GameScreen extends JPanel implements Runnable {
     private Thread gameThread;
     private Player player;
     private ArrayList<Enemy> enemies;
+    private ArrayList<Bullet> bullets;
 
     public GameScreen() {
         setPreferredSize(new Dimension(800, 600));
@@ -16,6 +17,7 @@ public class GameScreen extends JPanel implements Runnable {
 
         player = new Player(375, 550);
         enemies = new ArrayList<>();
+        bullets = new ArrayList<>();
 
         for(int i=0; i<5; i++){
             enemies.add(new Enemy((100 + (i*60)), 100));
@@ -30,6 +32,7 @@ public class GameScreen extends JPanel implements Runnable {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT -> player.moveLeft();
                     case KeyEvent.VK_RIGHT -> player.moveRight();
+                    case KeyEvent.VK_SPACE -> shootBullet();
                 }
             }
         });
@@ -46,10 +49,11 @@ public class GameScreen extends JPanel implements Runnable {
     @Override
     public void run() {
         while (running) {
+
             update();
             repaint();
             try{
-                Thread.sleep(16);
+                Thread.sleep(30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,6 +71,24 @@ public class GameScreen extends JPanel implements Runnable {
                 i--;
             }
         }
+
+
+        for (int i =0; i<bullets.size(); i++){
+            Bullet bullet = bullets.get(i);
+
+            bullet.move();
+            if(bullet.isOutOfBounds()){
+                bullets.remove(i);
+                i--;
+            }
+        }
+    }
+
+    private void shootBullet() {
+        int bulletX = player.getX() + player.getWidth() / 2-5;
+        int bulletY = player.getY() - 10;
+        Bullet bullet = new Bullet(bulletX, bulletY);
+        bullets.add(bullet);
     }
 
     @Override
@@ -77,6 +99,10 @@ public class GameScreen extends JPanel implements Runnable {
 
         for(Enemy enemy : enemies){
             enemy.draw(g);
+        }
+
+        for(Bullet bullet : bullets){
+            bullet.draw(g);
         }
     }
     

@@ -10,14 +10,6 @@ public class Enemy extends GameEntity{
         this.speed = 2;
     }
     
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public void move(){
         x += speed;
 
@@ -41,7 +33,7 @@ public class Enemy extends GameEntity{
     @Override
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
+        g.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 
 }

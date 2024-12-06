@@ -48,9 +48,8 @@ public class Player extends GameEntity {
 
     @Override
     public void draw(Graphics g) {
-        // TODO Auto-generated method stub
         g.setColor(Color.GREEN);
-        g.fillRect(x, y, width, height);
+        g.fillRect(getX(), getY(), getWidth(), getHeight());
     }
     
     
