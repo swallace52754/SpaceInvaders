@@ -7,10 +7,10 @@ public class Enemy extends GameEntity{
     private Image image;
 
     //Constructor for enemies
-    public Enemy(int x, int y) {
+    public Enemy(int x, int y, int speed) {
         super(x, y, 50, 50);
-        this.speed = 3;
         this.image = ImageLoader.loadImage("images/alien.png");
+        this.speed = speed;
     }
     
     //Move the enemies in specific direction
@@ -30,6 +30,10 @@ public class Enemy extends GameEntity{
 
     public void setX(int x){
         this.x = x;
+    }
+
+    public void setSpeed(int speed){
+        this.speed = speed;
     }
 
     public int getSpeed(){

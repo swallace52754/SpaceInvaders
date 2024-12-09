@@ -25,9 +25,7 @@ public class GameScreen extends JPanel implements Runnable {
         bullets = new ArrayList<>();
 
         //Add the number of inital enemies
-        for(int i=0; i<10; i++){
-            enemies.add(new Enemy((10 + (i*60)), 30));
-        }
+        addenemies(2, 10, 1);
 
         // Create Key listener to take input for actions of the game
         setFocusable(true);
@@ -49,6 +47,22 @@ public class GameScreen extends JPanel implements Runnable {
         running = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    private void addenemies(int rows, int enemiesPerRow, int speed){
+        enemies.clear();
+        int startX = 50;
+        int startY = 30;
+        int xSpacing = 60;
+        int ySpacing = 60;
+
+        for (int row = 0; row < rows; row++){
+            for(int col = 0; col < enemiesPerRow; col++){
+                int x = startX+ col * xSpacing;
+                int y = startY + row * ySpacing;
+                enemies.add(new Enemy(x, y, speed));
+            }
+        }
     }
     
 
@@ -132,11 +146,11 @@ public class GameScreen extends JPanel implements Runnable {
                     i--;
                     //When all enemies are cleared, a bonus score is added
                     //More enemies are added, to keep the game playing
-                    if (enemies.size() < 1){
+                    if (enemies.isEmpty()){
                         score += 150;
-                        for(int k=0; k<5; k++){
-                            enemies.add(new Enemy((100 + (k*60)), 100));
-                        }
+                        int rows = 1 + enemy.getSpeed();
+                        int speed = enemy.getSpeed() + 1;
+                        addenemies(rows, 10, speed);
                     }
                     break;
                 }
