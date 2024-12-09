@@ -1,43 +1,35 @@
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 public class Player extends GameEntity {
     private final int speed;
+    private Image image;
 
+    //Constructor for the player
     public Player(int x, int y) {
         super(x, y, 20, 50);
         this.speed = 10;
+        this.image = ImageLoader.loadImage("images/player.png");
     }
 
+    //Moves the player left by decreasing the X value 
     public void moveLeft(){
         x -= speed;
-        // if (x > 10){
-        //     x -= speed;
-        // } else{
-        //     x = 10;
-        // }
 
+        //Ensures the player can't move outside of the game screen
         if(x < 0){
             x = 0;
         }
-
-        // System.out.println(x);
     }
+
+    //Moves the player right by increasing the X value 
     public void moveRight(){
         x += speed;
 
+        //Ensures the player can't move outside of the game screen
         if(x > 800 - width){
             x = 800 - width;
         }
-
-        // if (x < (790 - width)){
-        //     x += speed;
-        // } else {
-        //     x = (800 - width - 10);
-        // }
-
-
-        //System.out.println(x);
     }
 
     @Override
@@ -46,11 +38,11 @@ public class Player extends GameEntity {
 
     }
 
+    //When called, draws the player on the screen
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
-    }
+            g.drawImage(image, x, y, width, height, null);
+        }
     
     
 }

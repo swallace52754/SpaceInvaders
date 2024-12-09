@@ -2,7 +2,6 @@ import java.awt.*;
 
 public abstract class GameEntity {
     protected int x, y, width, height;
-    // protected static int height;
 
     public GameEntity (int x, int y, int height, int width){
         this.x = x;
@@ -27,6 +26,7 @@ public abstract class GameEntity {
         return width;
     }
 
+    //Check if entities intersect each other
     public boolean intersects(GameEntity other) {
         return this.getX() < other.getX() + other.getWidth() && 
         this.getX() + this.getWidth() > other.getX() &&

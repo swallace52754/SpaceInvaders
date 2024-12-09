@@ -1,25 +1,43 @@
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 public class Enemy extends GameEntity{
     private int speed;
+    private Image image;
 
+    //Constructor for enemies
     public Enemy(int x, int y) {
         super(x, y, 50, 50);
-        this.speed = 2;
+        this.speed = 3;
+        this.image = ImageLoader.loadImage("images/alien.png");
     }
     
+    //Move the enemies in specific direction
     public void move(){
         x += speed;
 
+        //When the edge of the screen is reached, enemies change direction and move down
         if (x<=0 || x + width >=800){
             speed = -speed;
-
-            y += 60;
+            y += 80;
         }
     }
+
+    public void setY(int y){
+        this.y = y;
+    }
+
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getSpeed(){
+        return speed;
+    }
     
+    //Check if the enemy has reached the player
+    //This will end the game if it happens
     public boolean isOutOfBounds() {
         return getY() > 500;
     }
@@ -29,10 +47,9 @@ public class Enemy extends GameEntity{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
+    //When called, draws the enemy on the screen
+    @Override 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
+        g.drawImage(image, x, y, width, height, null);    
     }
-
 }
