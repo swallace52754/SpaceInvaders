@@ -1,54 +1,36 @@
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class GameScreen extends JPanel implements Runnable {
+public class GameScreen extends JPanel{
     private boolean running;
-    private Thread gameThread;
-    private Player player;
+    private final GameRenderer renderer;
+    private final Player player;
     private int score = 0;
-    private ArrayList<Enemy> enemies;
-    private ArrayList<Bullet> bullets;
+    private final ArrayList<Enemy> enemies;
+    private final ArrayList<Bullet> bullets;
     private boolean moveRight = true;
 
     public GameScreen() {
+        running = true;
         //Creates a black background for the game
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLACK);
 
+        //Create renderer to render graphics on game screen
+        renderer = new GameRenderer(this);
+
         // Create player at the given X and Y values
-        player = new Player(375, 550);
+        player = GameEntityFactory.createPlayer(375, 550);
         //Create Enemy and Bullet array lists
         enemies = new ArrayList<>();
         bullets = new ArrayList<>();
 
         //Add the number of inital enemies
         addenemies(2, 10, 1);
-
-        // Create Key listener to take input for actions of the game
-        setFocusable(true);
-        requestFocus();
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e){
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT -> player.moveLeft();
-                    case KeyEvent.VK_RIGHT -> player.moveRight();
-                    case KeyEvent.VK_SPACE -> shootBullet();
-                }
-            }
-        });
     }
 
-    // Method called to start the game thread
-    public void startGame() {
-        running = true;
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
-
+    //Adds enemies to the Array list
     private void addenemies(int rows, int enemiesPerRow, int speed){
         enemies.clear();
         int startX = 50;
@@ -60,30 +42,14 @@ public class GameScreen extends JPanel implements Runnable {
             for(int col = 0; col < enemiesPerRow; col++){
                 int x = startX+ col * xSpacing;
                 int y = startY + row * ySpacing;
-                enemies.add(new Enemy(x, y, speed));
+                enemies.add(GameEntityFactory.createEnemy(x, y, speed));
             }
         }
     }
     
 
-
-    //Game loop
-    @Override
-    public void run() {
-        while (running) {
-            update();
-            //Repaints the canvas each time it is called, to update position 
-            repaint();
-            try{
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //Update method which updates the game state
-    private void update() {
+    //Updates the game state
+    public void update() {
         //Updates player positions
         player.update();
 
@@ -109,19 +75,6 @@ public class GameScreen extends JPanel implements Runnable {
                 endGame();
             }
         }
-
-        //Loops through each enemy
-        //Tells each one to move
-        //Checks if they out of bounds, if they are the game is over
-        // for (int i =0; i<enemies.size(); i++){
-        //     Enemy enemy = enemies.get(i);
-        //     enemy.move();
-        //     if(enemy.isOutOfBounds()){
-        //         enemies.remove(i);
-        //         i--;
-        //         endGame();
-        //     }
-        // }
 
         //Loops through the bullets in the game
         //Tells each one to move
@@ -160,10 +113,10 @@ public class GameScreen extends JPanel implements Runnable {
     }
 
     //Shoots a bullet from the centre of the player
-    private void shootBullet() {
+    public void shootBullet() {
         int bulletX = player.getX() + player.getWidth() / 2-5;
         int bulletY = player.getY() - 10;
-        Bullet bullet = new Bullet(bulletX, bulletY);
+        Bullet bullet = GameEntityFactory.createBullet(bulletX, bulletY);
         bullets.add(bullet);
     }
 
@@ -179,39 +132,33 @@ public class GameScreen extends JPanel implements Runnable {
         repaint();
     }
 
+    //Getters and setters
+    public Player getPlayer(){
+        return this.player;
+    }
+
+    public ArrayList<Enemy> getEnemies(){
+        return this.enemies;
+    }
+
+    public ArrayList<Bullet> getBullets(){
+        return this.bullets;
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+
     @Override
     protected void paintComponent(Graphics g){
         // Clear canvas before trying to repaint anything
         super.paintComponent(g);
         if (running){
-            //Draw the player entity
-            player.draw(g);
-
-            //Loop through the Enemy array, drawing each enemy
-            for(Enemy enemy : enemies){
-                enemy.draw(g);
-            }
-
-            // Draw the bullets on the screen
-            for(Bullet bullet : bullets){
-                bullet.draw(g);
-            }
-
-            //Show the player's score in the corner of the screen
-            g.setColor(Color.GREEN);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Score: " + score, 10, 20);
-
+            renderer.render(g);
         } else {
             // Called after running is toggled to false
             //Clear entities from screen, shows game over message, and displays user score
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.GREEN);
-            g.setFont(new Font("Arial", Font.BOLD, 50));
-            g.drawString("GAME OVER", getWidth() / 2 - 150, getHeight() / 2 - 20);
-            g.setFont(new Font("Arial", Font.PLAIN, 30));
-            g.drawString("Your Score: " + score, getWidth() / 2 - 100, getHeight() / 2 + 40);
+            renderer.renderGameOver(g);
         }
     }
     

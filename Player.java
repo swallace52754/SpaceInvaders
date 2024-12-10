@@ -3,7 +3,7 @@ import java.awt.Image;
 
 public class Player extends GameEntity {
     private final int speed;
-    private Image image;
+    private final Image image;
 
     //Constructor for the player
     public Player(int x, int y) {
@@ -35,7 +35,6 @@ public class Player extends GameEntity {
     @Override
     public void update() {
         // TODO Auto-generated method stub
-
     }
 
     //When called, draws the player on the screen
@@ -43,6 +42,4 @@ public class Player extends GameEntity {
     public void draw(Graphics g) {
             g.drawImage(image, x, y, width, height, null);
         }
-    
-    
 }

@@ -15,9 +15,14 @@ public class Main {
         frame.setResizable(false);
         frame.setVisible(true);
 
-        //Call to start the game
-        gameScreen.startGame();
+        GameInputHandler inputHandler = new GameInputHandler(gameScreen.getPlayer(), gameScreen);
+        gameScreen.addKeyListener(inputHandler);
+        gameScreen.setFocusable(true);
+        gameScreen.requestFocusInWindow();
 
+        //Call to start the game
+        GameEngine gameEngine = new GameEngine(gameScreen);
+        gameEngine.start();
     }
 
 }

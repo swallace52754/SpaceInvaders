@@ -4,7 +4,7 @@ import java.awt.Image;
 
 public class Enemy extends GameEntity{
     private int speed;
-    private Image image;
+    private final Image image;
 
     //Constructor for enemies
     public Enemy(int x, int y, int speed) {
@@ -13,17 +13,7 @@ public class Enemy extends GameEntity{
         this.speed = speed;
     }
     
-    //Move the enemies in specific direction
-    public void move(){
-        x += speed;
-
-        //When the edge of the screen is reached, enemies change direction and move down
-        if (x<=0 || x + width >=800){
-            speed = -speed;
-            y += 80;
-        }
-    }
-
+    //Getters and setters
     public void setY(int y){
         this.y = y;
     }
